@@ -1,5 +1,6 @@
 #include "alarmHeader.hpp"
 
+// prototype for ReadAlarmFile function
 int ReadAlarmFile();
 
 int main()
