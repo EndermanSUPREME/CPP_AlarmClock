@@ -12,16 +12,16 @@ int main()
 	if (c == 'n' || c == 'N')
 	{
 		Alarm nAlarm;
-        nAlarm.CreateAlarm();
+        	nAlarm.CreateAlarm();
 	}
 	else
 	{
-        // preopen web browser
-        ShellExecute(0, 0, L"https://google.com/", 0, 0, 0);
-
-        // bring console into focus
-        Sleep(1500);
-        ShowWindow(GetConsoleWindow(), SW_SHOWMAXIMIZED);
+	        // preopen web browser
+	        ShellExecute(0, 0, L"https://google.com/", 0, 0, 0);
+	
+	        // bring console into focus
+	        Sleep(1500);
+	        ShowWindow(GetConsoleWindow(), SW_SHOWMAXIMIZED);
 
 		ReadAlarmFile();
 	}
@@ -38,6 +38,7 @@ int ReadAlarmFile()
 
         inputFile.open("C:/PC_Alarm/alarms.txt");
 
+	    // Runs when the alarms.txt file cannot be found
         if (!inputFile.is_open()) {
             cout << "[-] Failed to open the input file." << endl;
             cout << "[*] Check if alarms.txt is located in :: C:/alarms.txt OR C:/PC_Alarm/alarms.txt" << endl;
@@ -47,13 +48,15 @@ int ReadAlarmFile()
             ifstream soundFile("C:/beeper.mp3");
             ifstream soundFile2("C:/PC_Alarm/beeper.mp3");
 
-            // Play sound for when an issue occurs
+            // check if mp3 file exists in specific locations
             if (soundFile.good())
             {
+		    // Play sound for when an issue occurs
                 system("C:/beeper.mp3");
             }
             else if (soundFile2.good())
             {
+		    // Play sound for when an issue occurs
                 system("C:/PC_Alarm/beeper.mp3");
             }
             else
@@ -66,12 +69,15 @@ int ReadAlarmFile()
             
             char c;
             cout << "Press Enter to Continue" << endl;
+		// Mostly here incase something goes wrong the screen program doesnt quit
+		// when the user is trying to read any debug outputs
             cin >> c;
 
             return 1;
         }
     }
 
+	// Code below runs when alarms.txt is found and can be opened without error
     cout << "[+] alarms.txt was Found!" << endl;
 
     string line;
@@ -80,14 +86,13 @@ int ReadAlarmFile()
 
     while (std::getline(inputFile, line)) {
         if (line.length() >= 7) {
-            // Extract characters 0-4 into substring1 and characters 5-6 into substring2
-            substring1 = line.substr(0, 5);
-            substring2 = line.substr(5, 2);
-
-            // Do something with the substrings (e.g., print or process them)
-            // std::cout << "Substring 1: " << substring1 << " Substring 2: " << substring2 << std::endl;
+		
+            // Extract Time components from string
+            timeStr = line.substr(0, 5);
+            modeStr = line.substr(5, 2);
+		
             Alarm nAlarm;
-            nAlarm.CreateMultiAlarm(substring1, substring2);
+            nAlarm.CreateMultiAlarm(timeStr, modeStr);
         }
     }
 
